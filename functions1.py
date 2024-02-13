@@ -42,8 +42,14 @@ s = input().split()
 print(filter_prime(s))
 
 #task5
+from itertools import permutations
 
+def perms(s):
+    s1 = [''.join(i) for i in permutations(s)]
+    return s1
 
+s = input()
+print(perms(s))
 
 #task6
 def re(s):
