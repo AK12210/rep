@@ -31,3 +31,15 @@ s = ["Hello\n", "World\n"]
 ff = open('Adm\Downloads', 'w')
 ff.writelines(s)
 ff.close()
+
+#task7
+import shutil 
+
+shutil.copyfile('doc1.txt','doc2.txt')
+
+#task8
+import os
+
+path = 'C:\Users\Adm\Downloads\exampl.txt'
+if os.path.exists(path) and os.access(path, os.X_OK):
+    os.remove(path)
