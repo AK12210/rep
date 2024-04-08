@@ -19,6 +19,8 @@ paddleH = 25
 paddleSpeed = 20
 ballSpeed = 6
 
+is_paused = False
+
 paddle = pygame.Rect(W // 2 - paddleW // 2, H - paddleH - 30, paddleW, paddleH)
 
 # Ball
@@ -34,10 +36,6 @@ game_score_text = game_score_fonts.render(f'Your game score is: {game_score}', T
 game_score_rect = game_score_text.get_rect()
 game_score_rect.center = (210, 20)
 
-main_menu_button_img = pygame.transform.scale(pygame.image.load('assets/settings/back_main_menu_button.png'), (350, 50))
-start_game_button_img = pygame.transform.scale(pygame.image.load('assets/main_menu/start_game_button.png'), (350, 50))
-quit_game_button_img = pygame.transform.scale(pygame.image.load('assets/main_menu/quit_game_button.png'), (350, 50))
-settings_button_img = pygame.transform.scale(pygame.image.load('assets/main_menu/settings_button.png'), (350, 50))
 collision_sound = pygame.mixer.Sound('catch.mp3')
 
 # Variable to track elapsed time
@@ -86,18 +84,36 @@ wintextRect.center = (W // 2, H // 2)
 while not done:
     dt = clock.tick(FPS) / 1000
     elapsed_time += dt
-    start_game_button = screen.blit(start_game_button_img, (120, 500))
-        
-    #Set options button
-    settings_button = screen.blit(settings_button_img, (120, 570))
-        
-    #Set quit button
-    quit_game_button = screen.blit(quit_game_button_img, (120, 640))
+
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-        if main_menu_button.collidepoint(x, y):
-          
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_p:  # Toggle pause
+                is_paused = not is_paused
+            if is_paused:
+                if event.key == pygame.K_w:
+                    paddleW += 10
+                    paddle = pygame.Rect(paddle.left, paddle.top, paddleW, paddleH)  # Adjust paddle size
+                if event.key == pygame.K_s and paddleW > 10:
+                    paddleW -= 10
+                    paddle = pygame.Rect(paddle.left, paddle.top, paddleW, paddleH)  # Adjust paddle size        
+    if is_paused:  # Pause
+        screen.fill((0, 0, 0))
+        pause_text = game_score_fonts.render('Paused', True, (255, 255, 255))
+        pause_text_1 = game_score_fonts.render(
+            f'Paddle width: {paddleW}', True,
+            (255, 255, 255))
+        pause_text_2 = game_score_fonts.render(
+            'Press W/S to adjust paddle width', True,
+            (255, 255, 255))
+
+        screen.blit(pause_text, pause_text.get_rect(center=(W // 2, H // 2 - 150)))
+        screen.blit(pause_text_1, pause_text_1.get_rect(center=(W // 2 - 150, H // 2)))
+        screen.blit(pause_text_2, pause_text_1.get_rect(center=(W // 2 - 150, H // 2 + 350)))
+
+        pygame.display.flip()
+        continue
     screen.fill(bg)
 
     [pygame.draw.rect(screen, block["color"], block["rect"]) for block in block_list]
