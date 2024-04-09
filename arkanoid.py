@@ -92,10 +92,10 @@ while not done:
             if event.key == pygame.K_p:  # Toggle pause
                 is_paused = not is_paused
             if is_paused:
-                if event.key == pygame.K_w:
+                if event.key == pygame.K_a:
                     paddleW += 10
                     paddle = pygame.Rect(paddle.left, paddle.top, paddleW, paddleH)  # Adjust paddle size
-                if event.key == pygame.K_s and paddleW > 10:
+                if event.key == pygame.K_d and paddleW > 10:
                     paddleW -= 10
                     paddle = pygame.Rect(paddle.left, paddle.top, paddleW, paddleH)  # Adjust paddle size        
     if is_paused:  # Pause
@@ -105,7 +105,7 @@ while not done:
             f'Paddle width: {paddleW}', True,
             (255, 255, 255))
         pause_text_2 = game_score_fonts.render(
-            'Press W/S to adjust paddle width', True,
+            'Press A/D to adjust paddle width', True,
             (255, 255, 255))
 
         screen.blit(pause_text, pause_text.get_rect(center=(W // 2, H // 2 - 150)))
